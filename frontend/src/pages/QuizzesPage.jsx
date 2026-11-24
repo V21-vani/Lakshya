@@ -34,7 +34,7 @@ export default function QuizzesPage() {
             return (
               <div key={q.id} className="card flex flex-col p-5">
                 <div className="flex items-start justify-between gap-2">
-                  <h2 className="font-semibold text-slate-900">{q.title}</h2>
+                  <h2 className="font-semibold text-ink">{q.title}</h2>
                   {best !== null && <Badge color={passed ? 'green' : 'amber'}>Best {best}%</Badge>}
                 </div>
                 <p className="mt-1 flex-1 text-sm text-slate-500">{q.description}</p>
@@ -52,16 +52,16 @@ export default function QuizzesPage() {
 
       {attempts.length > 0 && (
         <div>
-          <h2 className="mb-3 font-semibold text-slate-900">Your attempts</h2>
+          <h2 className="mb-3 font-semibold text-ink">Your attempts</h2>
           <div className="card overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
+              <thead className="border-b border-cream-200 text-xs uppercase text-slate-500">
                 <tr><th className="px-5 py-3">Quiz</th><th className="px-5 py-3">Score</th><th className="px-5 py-3">Time taken</th><th className="px-5 py-3">Completed</th></tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-cream-200">
                 {attempts.map((a) => (
                   <tr key={a.id}>
-                    <td className="px-5 py-3 font-medium text-slate-900">{a.quiz?.title}</td>
+                    <td className="px-5 py-3 font-medium text-ink">{a.quiz?.title}</td>
                     <td className="px-5 py-3"><Badge color={a.percent >= (a.quiz?.passingScore ?? 0) ? 'green' : 'red'}>{a.percent}%</Badge></td>
                     <td className="px-5 py-3 text-slate-600">{a.timeTakenMinutes} min</td>
                     <td className="px-5 py-3 text-slate-600">{formatDateTime(a.completedAt)}</td>

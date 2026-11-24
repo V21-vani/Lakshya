@@ -29,7 +29,7 @@ function Section({ title, children }) {
   if (!children) return null;
   return (
     <div>
-      <h3 className="mb-1 text-sm font-semibold text-slate-900">{title}</h3>
+      <h3 className="mb-1 text-sm font-semibold text-ink">{title}</h3>
       <div className="whitespace-pre-wrap text-sm text-slate-600">{children}</div>
     </div>
   );
@@ -117,7 +117,7 @@ export default function ProblemWorkspacePage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/practice" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900">
+      <Link to="/practice" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> All problems
       </Link>
 
@@ -125,7 +125,7 @@ export default function ProblemWorkspacePage() {
         {/* Problem statement */}
         <div className="card space-y-5 p-6">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">{problem.title}</h1>
+            <h1 className="text-xl font-semibold text-ink">{problem.title}</h1>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <Badge color={difficultyColor(problem.difficulty)}>{problem.difficulty}</Badge>
               <Badge color="gray">{problem.topic}</Badge>
@@ -139,10 +139,10 @@ export default function ProblemWorkspacePage() {
           <Section title="Constraints">{problem.constraints}</Section>
           {testCases.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-semibold text-slate-900">Examples</h3>
+              <h3 className="mb-2 text-sm font-semibold text-ink">Examples</h3>
               <div className="space-y-2">
                 {testCases.slice(0, 2).map((tc, i) => (
-                  <pre key={i} className="overflow-x-auto rounded-lg bg-slate-50 p-3 text-xs text-slate-700">
+                  <pre key={i} className="overflow-x-auto rounded-lg bg-cream-100 p-3 text-xs text-slate-700">
                     {`Input:  ${JSON.stringify(tc.input)}\nOutput: ${JSON.stringify(tc.output)}`}
                   </pre>
                 ))}
@@ -154,7 +154,7 @@ export default function ProblemWorkspacePage() {
         {/* Editor + results */}
         <div className="flex flex-col gap-4">
           <div className="card overflow-hidden">
-            <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 px-4 py-2">
+            <div className="flex flex-wrap items-center gap-2 border-b border-cream-200 px-4 py-2">
               <select className="input w-auto py-1.5" value={language} onChange={(e) => changeLanguage(e.target.value)} aria-label="Language">
                 {LANGUAGES.map((l) => <option key={l.id} value={l.id}>{l.label}</option>)}
               </select>
@@ -170,7 +170,7 @@ export default function ProblemWorkspacePage() {
           </div>
 
           <div className="card p-4">
-            <h2 className="mb-3 font-semibold text-slate-900">Test results</h2>
+            <h2 className="mb-3 font-semibold text-ink">Test results</h2>
             {notice ? <Alert type="info">{notice}</Alert> : <TestResults result={result} />}
           </div>
         </div>

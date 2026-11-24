@@ -53,12 +53,12 @@ export default function PracticePage() {
       {filtered.length === 0 ? (
         <EmptyState title="No problems match">Try clearing the filters.</EmptyState>
       ) : (
-        <div className="card divide-y divide-slate-100 overflow-hidden">
+        <div className="card divide-y divide-cream-200 overflow-hidden">
           {filtered.map((p) => (
-            <Link key={p.id} to={`/practice/${p.id}`} className="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50">
+            <Link key={p.id} to={`/practice/${p.id}`} className="flex items-center gap-4 px-5 py-4 transition hover:bg-cream-100">
               <span className="w-5">{solved[p.id] && <CheckCircle2 className="h-5 w-5 text-emerald-500" aria-label="Solved" />}</span>
               <div className="min-w-0 flex-1">
-                <p className="font-medium text-slate-900">{p.title}</p>
+                <p className="font-medium text-ink">{p.title}</p>
                 <p className="truncate text-sm text-slate-500">{p.description}</p>
               </div>
               <Badge color="gray">{p.topic}</Badge>

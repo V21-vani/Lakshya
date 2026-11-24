@@ -12,6 +12,7 @@ export const authApi = {
 export const problemsApi = {
   list: (topic) => request('/api/problems', { params: { topic } }),
   get: (id) => request(`/api/problems/${id}`),
+  create: (problem) => request('/api/problems', { method: 'POST', body: problem }),
 };
 
 // ---- Quizzes ----
@@ -24,12 +25,16 @@ export const quizzesApi = {
       params: { scoreObtained, timeTakenMinutes, answersJson },
     }),
   attemptsByStudent: (studentId) => request(`/api/quizzes/student/${studentId}/attempts`),
+  attemptsByQuiz: (quizId) => request(`/api/quizzes/${quizId}/attempts`),
+  create: (quiz) => request('/api/quizzes', { method: 'POST', body: quiz }),
 };
 
 // ---- Applications ----
 export const applicationsApi = {
   apply: (driveId) => request('/api/applications', { method: 'POST', body: { placementDrive: { id: driveId } } }),
   byStudent: (studentId) => request(`/api/applications/student/${studentId}`),
+  byDrive: (driveId) => request(`/api/applications/drive/${driveId}`),
+  updateStatus: (id, status) => request(`/api/applications/${id}/status`, { method: 'PATCH', params: { status } }),
 };
 
 // ---- Placement drives ----

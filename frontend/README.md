@@ -1,4 +1,4 @@
-# Lakshya Frontend: Layout & Student Portal
+# Lakshya Frontend: Student & Mentor Portal
 
 React 19 + Vite + Tailwind CSS frontend for the Lakshya placement mentoring platform.
 
@@ -15,7 +15,7 @@ npm run dev        # http://localhost:5173
 Vite proxies `/api/*` to the backend, so no CORS setup is needed in development.
 To use another backend, set `VITE_API_URL` (e.g. in `frontend/.env.local`).
 
-Demo logins (seeded by the backend): `admin`, `mentor1`, `student1`, all with password `password123`.
+Demo logins (seeded by the backend), all with password `password123`: `student1` (student portal), `mentor1` / `admin` (mentor portal).
 
 ## What's here
 
@@ -28,6 +28,12 @@ Demo logins (seeded by the backend): `admin`, `mentor1`, `student1`, all with pa
 | Code workspace | `/practice/:id` | CodeMirror editor, JS / Python / Java / C++, test results panel |
 | Quizzes | `/quizzes`, `/quizzes/:id` | Timed quiz with countdown, auto-submit, question navigator, review screen |
 | Placement drives | `/drives` | Eligible / Not Eligible / Closed badges, apply confirmation, application status |
+| Mentor dashboard | `/mentor` | Mentors & admins only: student stats, readiness distribution, quiz averages, needs-attention list |
+| Mentor: students | `/mentor/students` | Per-student readiness, quiz history and applications |
+| Mentor: content | `/mentor/content` | Problem bank and quizzes, create forms (POST to backend) |
+| Mentor: applications | `/mentor/applications` | Filter by status and update application status (PATCH to backend) |
+
+Users are routed by role: `STUDENT` → student portal, `MENTOR`/`ADMIN` → mentor portal (see `src/roles.js`).
 
 **Eligibility rule:** a student's *readiness score* is the average of their quiz percentages.
 They're eligible for a drive when it is ≥ the drive's `minimumScore` and the deadline hasn't passed.

@@ -10,12 +10,12 @@ const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 
 function Intro({ quiz, questions, onStart }) {
   return (
     <div className="card mx-auto max-w-xl p-8 text-center">
-      <h1 className="text-2xl font-semibold text-slate-900">{quiz.title}</h1>
+      <h1 className="text-2xl font-semibold text-ink">{quiz.title}</h1>
       <p className="mt-2 text-slate-500">{quiz.description}</p>
       <div className="mt-6 grid grid-cols-3 gap-3 text-sm">
-        <div className="rounded-lg bg-slate-50 p-3"><p className="text-lg font-semibold text-slate-900">{questions.length}</p><p className="text-slate-500">Questions</p></div>
-        <div className="rounded-lg bg-slate-50 p-3"><p className="text-lg font-semibold text-slate-900">{quiz.durationMinutes} min</p><p className="text-slate-500">Time limit</p></div>
-        <div className="rounded-lg bg-slate-50 p-3"><p className="text-lg font-semibold text-slate-900">{quiz.passingScore ?? 0}%</p><p className="text-slate-500">To pass</p></div>
+        <div className="rounded-lg bg-cream-100 p-3"><p className="text-lg font-semibold text-ink">{questions.length}</p><p className="text-slate-500">Questions</p></div>
+        <div className="rounded-lg bg-cream-100 p-3"><p className="text-lg font-semibold text-ink">{quiz.durationMinutes} min</p><p className="text-slate-500">Time limit</p></div>
+        <div className="rounded-lg bg-cream-100 p-3"><p className="text-lg font-semibold text-ink">{quiz.passingScore ?? 0}%</p><p className="text-slate-500">To pass</p></div>
       </div>
       <p className="mt-6 text-sm text-slate-500">The timer starts when you click Start, and the quiz submits automatically when time runs out.</p>
       <button className="btn-primary mt-6 w-full" onClick={onStart}>Start quiz</button>
@@ -44,7 +44,7 @@ function Results({ quiz, questions, answers, score, percent, onRetake }) {
             <div key={i} className="card p-4">
               <div className="flex items-start gap-2">
                 {correct ? <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> : <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />}
-                <p className="text-sm font-medium text-slate-900">{i + 1}. {q.q}</p>
+                <p className="text-sm font-medium text-ink">{i + 1}. {q.q}</p>
               </div>
               <p className="ml-6 mt-1 text-sm text-slate-600">
                 Correct answer: <b>{q.options[q.answer]}</b>
@@ -145,32 +145,32 @@ export default function QuizTakePage() {
     <div className="mx-auto max-w-3xl space-y-4">
       <div className="card flex items-center justify-between p-4">
         <div>
-          <p className="font-semibold text-slate-900">{quiz.title}</p>
+          <p className="font-semibold text-ink">{quiz.title}</p>
           <p className="text-xs text-slate-500">{answeredCount} of {questions.length} answered</p>
         </div>
-        <div className={`flex items-center gap-2 rounded-lg px-3 py-1.5 font-mono text-lg font-semibold ${lowTime ? 'bg-red-50 text-red-600' : 'bg-slate-100 text-slate-900'}`}
+        <div className={`flex items-center gap-2 rounded-lg px-3 py-1.5 font-mono text-lg font-semibold ${lowTime ? 'bg-red-50 text-red-600' : 'bg-brand-200 text-ink'}`}
           role="timer" aria-label="Time remaining">
           <Clock className="h-4 w-4" />{fmt(secondsLeft)}
         </div>
       </div>
 
-      <div className="h-1.5 overflow-hidden rounded-full bg-slate-200">
-        <div className="h-full bg-brand-600 transition-all" style={{ width: `${((current + 1) / questions.length) * 100}%` }} />
+      <div className="h-1.5 overflow-hidden rounded-full bg-cream-200">
+        <div className="h-full rounded-full bg-ink transition-all" style={{ width: `${((current + 1) / questions.length) * 100}%` }} />
       </div>
 
       <div className="card p-6">
         <p className="text-xs font-medium uppercase text-slate-500">Question {current + 1} of {questions.length}</p>
-        <h2 className="mt-2 text-lg font-medium text-slate-900">{q.q}</h2>
+        <h2 className="mt-2 text-lg font-medium text-ink">{q.q}</h2>
         <div className="mt-5 space-y-2" role="radiogroup">
           {q.options.map((opt, i) => {
             const selected = answers[current] === i;
             return (
               <button key={i} role="radio" aria-checked={selected}
                 onClick={() => setAnswers({ ...answers, [current]: i })}
-                className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left text-sm transition ${
-                  selected ? 'border-brand-500 bg-brand-50 text-brand-900' : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'}`}>
+                className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3.5 text-left text-sm transition ${
+                  selected ? 'border-ink bg-brand-50 text-ink' : 'border-cream-200 hover:border-cream-300 hover:bg-cream-50'}`}>
                 <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-semibold ${
-                  selected ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-slate-500'}`}>
+                  selected ? 'border-ink bg-ink text-white' : 'border-cream-300 text-slate-500'}`}>
                   {String.fromCharCode(65 + i)}
                 </span>
                 {opt}
@@ -185,8 +185,8 @@ export default function QuizTakePage() {
         <div className="flex flex-wrap justify-center gap-1.5">
           {questions.map((_, i) => (
             <button key={i} onClick={() => setCurrent(i)} aria-label={`Go to question ${i + 1}`}
-              className={`h-8 w-8 rounded-md text-xs font-medium ${
-                i === current ? 'bg-brand-600 text-white' : answers[i] !== undefined ? 'bg-brand-100 text-brand-700' : 'bg-white text-slate-500 ring-1 ring-slate-200'}`}>
+              className={`h-8 w-8 rounded-lg text-xs font-medium ${
+                i === current ? 'bg-ink text-white' : answers[i] !== undefined ? 'bg-brand-300 text-ink' : 'bg-white text-slate-500 ring-1 ring-cream-300'}`}>
               {i + 1}
             </button>
           ))}

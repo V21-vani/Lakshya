@@ -28,9 +28,9 @@ export function eligibility(drive, readinessScore) {
 
 function ConfirmDialog({ drive, onCancel, onConfirm, busy }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4" role="dialog" aria-modal="true" aria-labelledby="apply-title">
+    <div className="fixed inset-0 z-50 !mt-0 flex items-center justify-center bg-slate-900/40 px-4" role="dialog" aria-modal="true" aria-labelledby="apply-title">
       <div className="card w-full max-w-md p-6">
-        <h2 id="apply-title" className="text-lg font-semibold text-slate-900">Apply to {drive.companyName}?</h2>
+        <h2 id="apply-title" className="text-lg font-semibold text-ink">Apply to {drive.companyName}?</h2>
         <p className="mt-2 text-sm text-slate-600">
           You're applying for <b>{drive.jobTitle}</b>. Your profile and assessment scores will be shared with the placement team.
         </p>
@@ -102,19 +102,19 @@ export default function DrivesPage() {
 
       <div className="card flex flex-wrap items-center justify-between gap-4 p-4">
         <div className="flex items-center gap-3">
-          <span className="rounded-lg bg-brand-50 p-2 text-brand-600"><Target className="h-5 w-5" /></span>
+          <span className="rounded-xl bg-brand-200 p-2 text-ink"><Target className="h-5 w-5" /></span>
           <div>
             <p className="text-xs text-slate-500">Your readiness score</p>
-            <p className="text-lg font-semibold text-slate-900">
+            <p className="text-lg font-semibold text-ink">
               {student.readinessScore === null ? 'Not yet rated' : `${student.readinessScore}%`}
             </p>
           </div>
-          {student.readinessScore === null && <Link to="/quizzes" className="ml-2 text-sm font-medium text-brand-600 hover:underline">Take a quiz →</Link>}
+          {student.readinessScore === null && <Link to="/quizzes" className="ml-2 text-sm font-medium link">Take a quiz →</Link>}
         </div>
-        <div className="flex rounded-lg border border-slate-200 p-1 text-sm" role="tablist">
+        <div className="flex gap-1 rounded-xl border border-cream-200 bg-cream-50 p-1 text-sm font-semibold" role="tablist">
           {[['ALL', 'All'], ['ELIGIBLE', 'Eligible'], ['APPLIED', 'Applied']].map(([k, label]) => (
             <button key={k} role="tab" aria-selected={filter === k} onClick={() => setFilter(k)}
-              className={`rounded-md px-3 py-1 ${filter === k ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}>
+              className={`rounded-lg px-3.5 py-1.5 ${filter === k ? 'bg-ink text-white' : 'text-slate-600 hover:bg-cream-100'}`}>
               {label}
             </button>
           ))}
@@ -128,9 +128,9 @@ export default function DrivesPage() {
           {visible.map(({ drive, elig, application }) => (
             <div key={drive.id} className="card flex flex-col p-5">
               <div className="flex items-start gap-3">
-                <span className="rounded-lg bg-slate-100 p-2.5 text-slate-600"><Building2 className="h-5 w-5" /></span>
+                <span className="rounded-xl bg-sunny/50 p-2.5 text-ink"><Building2 className="h-5 w-5" /></span>
                 <div className="min-w-0 flex-1">
-                  <h2 className="font-semibold text-slate-900">{drive.companyName}</h2>
+                  <h2 className="font-semibold text-ink">{drive.companyName}</h2>
                   <p className="text-sm text-slate-600">{drive.jobTitle}</p>
                 </div>
                 {elig.closed ? <Badge color="gray">Closed</Badge>
@@ -149,7 +149,7 @@ export default function DrivesPage() {
                 <span className="inline-flex items-center gap-1"><CalendarClock className="h-3.5 w-3.5" />Apply by {formatDate(drive.applicationDeadline)}</span>
               </div>
 
-              <div className="mt-4 flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
+              <div className="mt-4 flex items-center justify-between gap-3 border-t border-cream-200 pt-4">
                 <p className={`text-xs ${elig.eligible ? 'text-emerald-700' : 'text-slate-500'}`}>{elig.reason}</p>
                 {application ? (
                   <Badge color={statusColor(application.status)}>Applied · {application.status}</Badge>
