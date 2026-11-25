@@ -3,6 +3,8 @@
 // Set VITE_API_URL to point at a different backend (e.g. a deployed one).
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '';
+// VITE_DEMO=true builds a backend-free version (used for the GitHub Pages site).
+export const IS_DEMO = import.meta.env.VITE_DEMO === 'true';
 const TOKEN_KEY = 'lakshya_token';
 
 export const tokenStore = {
@@ -38,11 +40,20 @@ export async function request(path, { method = 'GET', body, params, auth = true 
   const token = tokenStore.get();
   if (auth && token) headers.Authorization = `Bearer ${token}`;
 
+  const init = { method, headers, body: body !== undefined ? JSON.stringify(body) : undefined };
   let res;
   try {
-    res = await fetch(url, { method, headers, body: body !== undefined ? JSON.stringify(body) : undefined });
+    if (IS_DEMO) {
+      // Demo build (GitHub Pages): no backend, answer from the in-browser stand-in.
+      const { handleDemoRequest } = await import('./demoServer');
+      res = await handleDemoRequest(url.toString(), init);
+    } else {
+      res = await fetch(url, init);
+    }
   } catch {
-    throw new ApiError('Cannot reach the server. Is the backend running on port 8080?', 0);
+    throw new ApiError(BASE_URL
+      ? 'Cannot reach the server. It may be waking up (free hosting sleeps when idle); try again in a minute.'
+      : 'Cannot reach the server. Is the backend running on port 8080?', 0);
   }
 
   if (res.status === 401 && token) {

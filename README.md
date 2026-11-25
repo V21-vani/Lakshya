@@ -22,3 +22,17 @@ cd frontend            && npm install && npm run dev
 ```
 
 Then open http://localhost:5173. Demo logins (password `password123`): `student1`, `mentor1`, `admin`.
+
+## Deploy
+
+**Backend on Render** (free, runs the Spring Boot API from `backend/Dockerfile`):
+Render dashboard → New → Blueprint → pick this repo. `render.yaml` sets everything up.
+The free plan sleeps after 15 idle minutes, so the first request can take about a minute. The H2 database resets on each redeploy and the demo logins are re-created.
+
+**Frontend on Vercel**: Vercel dashboard → Add New → Project → import this repo, set
+*Root Directory* to `frontend`, and add the environment variable
+`VITE_API_URL` = your Render URL (e.g. `https://lakshya-backend.onrender.com`). Every push to `main` redeploys.
+
+**Demo on GitHub Pages** (no backend; data stays in the visitor's browser):
+repo Settings → Pages → Source: *GitHub Actions*. The workflow in `.github/workflows/deploy-pages.yml`
+publishes `https://<owner>.github.io/Lakshya/` on every push to `main`.

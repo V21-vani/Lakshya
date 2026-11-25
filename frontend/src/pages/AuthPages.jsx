@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Alert } from '../components/ui';
+import { IS_DEMO } from '../api/client';
 import { DoodleLeft, DoodleRight, Squiggle } from '../components/Doodles';
 import Logo from '../components/Logo';
 
@@ -87,6 +88,11 @@ export function LoginPage() {
   return (
     <AuthShell mode="login" title="Student Login" subtitle="Hey, enter your details to sign in to your account">
       <form onSubmit={submit} className="space-y-4">
+        {IS_DEMO && (
+          <Alert type="info">
+            Demo version: your data stays in this browser. Log in as <b>student1</b> or <b>mentor1</b>, password <b>password123</b>.
+          </Alert>
+        )}
         {error && <Alert type="error">{error}</Alert>}
         <div>
           <label className="sr-only" htmlFor="username">Username</label>
