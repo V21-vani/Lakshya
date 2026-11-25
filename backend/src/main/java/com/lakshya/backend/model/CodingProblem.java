@@ -1,6 +1,7 @@
 package com.lakshya.backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,12 +25,14 @@ public class CodingProblem {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "is required")
     private String title;
 
     @Column(columnDefinition = "text")
     private String description;
 
     @Column(nullable = false)
+    @NotBlank(message = "is required")
     private String difficulty; // EASY, MEDIUM, HARD
 
     @Column(name = "input_format", columnDefinition = "text")

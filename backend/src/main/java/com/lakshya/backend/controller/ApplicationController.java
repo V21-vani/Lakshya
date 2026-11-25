@@ -83,6 +83,7 @@ public class ApplicationController {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/student/{studentId}")
     public ResponseEntity<List<Application>> getApplicationsByStudent(@PathVariable Long studentId) {
+        userService.requireSelfOrStaff(studentId);
         List<Application> applications = applicationRepository.findByStudentId(studentId);
         return ResponseEntity.ok(applications);
     }

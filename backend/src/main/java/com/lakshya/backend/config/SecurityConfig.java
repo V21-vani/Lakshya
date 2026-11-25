@@ -43,8 +43,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/quizzes/{id}").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/h2-console/**", "/error").permitAll()
+                        // Mentor/admin-only actions
+                        .requestMatchers(HttpMethod.POST, "/api/problems", "/api/quizzes").hasAnyRole("MENTOR", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/problems/**", "/api/applications/*/status").hasAnyRole("MENTOR", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/problems/**").hasAnyRole("MENTOR", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/applications/drive/**", "/api/quizzes/*/attempts").hasAnyRole("MENTOR", "ADMIN")
                         .anyRequest().authenticated())
-                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                        .accessDeniedHandler((req, res, ex) -> res.sendError(HttpStatus.FORBIDDEN.value())))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

@@ -5,7 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -42,6 +47,35 @@ public class GlobalExceptionHandler {
         log.error("External service failure", ex);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
                 .body(ApiError.of(502, "Bad Gateway", ex.getMessage(), List.of()));
+    }
+
+    /** Unknown URL -> 404 (previously fell through to the 500 safety net). */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNotFound(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiError.of(404, "Not Found", "No endpoint at /" + ex.getResourcePath(), List.of()));
+    }
+
+    /** Wrong HTTP method (e.g. GET on a POST-only endpoint) -> 405. */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiError> handleMethod(HttpRequestMethodNotSupportedException ex) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(ApiError.of(405, "Method Not Allowed", ex.getMessage(), List.of()));
+    }
+
+    /** Malformed JSON, bad path/query values, missing params -> 400 instead of 500. */
+    @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class,
+            MissingServletRequestParameterException.class})
+    public ResponseEntity<ApiError> handleBadInput(Exception ex) {
+        String msg;
+        if (ex instanceof HttpMessageNotReadableException) {
+            msg = "Request body is missing or not valid JSON";
+        } else if (ex instanceof MethodArgumentTypeMismatchException m) {
+            msg = "Invalid value for '" + m.getName() + "'";
+        } else {
+            msg = ex.getMessage();
+        }
+        return ResponseEntity.badRequest().body(ApiError.of(400, "Bad Request", msg, List.of()));
     }
 
     /** Safety net: never leak stack traces to clients. */
