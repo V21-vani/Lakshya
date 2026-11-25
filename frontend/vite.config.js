@@ -1,13 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
-// Dev server proxies /api to the Spring Boot backend, so the app can use relative URLs.
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 5173,
-    proxy: {
-      '/api': 'http://localhost:8080',
-    },
-  },
+  plugins: [react(), tailwindcss()],
 })
