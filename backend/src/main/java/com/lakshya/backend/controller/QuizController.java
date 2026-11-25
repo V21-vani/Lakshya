@@ -104,7 +104,8 @@ public class QuizController {
         attempt.setStudent(student);
         attempt.setQuiz(quiz);
         attempt.setScoreObtained((double) scoreObtained);
-        attempt.setMaxScore(quiz.getPassingScore());
+        attempt.setMaxScore(quiz.getTotalQuestions() != null
+                ? quiz.getTotalQuestions().doubleValue() : quiz.getPassingScore());
         attempt.setTimeTakenMinutes(timeTakenMinutes);
         attempt.setAnswersJson(answersJson);
         attempt.setStatus("COMPLETED");
@@ -120,6 +121,7 @@ public class QuizController {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/student/{studentId}/attempts")
     public ResponseEntity<List<QuizAttempt>> getAttemptsByStudent(@PathVariable Long studentId) {
+        userService.requireSelfOrStaff(studentId);
         List<QuizAttempt> attempts = quizAttemptRepository.findByStudentId(studentId);
         return ResponseEntity.ok(attempts);
     }

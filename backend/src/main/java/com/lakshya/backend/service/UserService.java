@@ -16,6 +16,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    /** Students may only read their own data; mentors and admins may read anyone's. */
+    @Transactional(readOnly = true)
+    public void requireSelfOrStaff(Long studentId) {
+        User me = getCurrentUser();
+        boolean staff = "MENTOR".equals(String.valueOf(me.getRole())) || "ADMIN".equals(String.valueOf(me.getRole()));
+        if (!staff && !me.getId().equals(studentId)) {
+            throw new org.springframework.security.access.AccessDeniedException("You can only view your own data");
+        }
+    }
+
     @Transactional(readOnly = true)
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

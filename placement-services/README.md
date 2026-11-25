@@ -34,8 +34,8 @@ placement-services
    export MAIL_USERNAME=youraddress@gmail.com
    export MAIL_PASSWORD=your-16-char-app-password
    ```
-3. Unit tests (no internet/SMTP needed): `mvn test`
-4. Start: `mvn spring-boot:run` -> http://localhost:8082
+3. Unit tests (no internet/SMTP needed): `mvnw.cmd test` (Windows) or `./mvnw test`
+4. Start: `mvnw.cmd spring-boot:run` -> http://localhost:8082
 
 Judge0 uses the free public instance https://ce.judge0.com by default (rate limited).
 For RapidAPI set `JUDGE0_API_KEY` and `judge0.base-url=https://judge0-ce.p.rapidapi.com`.
